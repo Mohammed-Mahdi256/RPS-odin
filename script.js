@@ -1,40 +1,87 @@
 const array = ["rock", "paper", "scissors"];
 
+
+const rockBtn = document.querySelector('.rock');
+const paperBtn = document.querySelector('.paper');
+const scissorsBtn = document.querySelector('.scissors');
+
+const resultDiv = document.querySelector('.result');
+
+const playerScoreDisplay = document.querySelector('.player-score');
+const computerScoreDisplay = document.querySelector('.computer-score');
+
+let playerScore = 0;
+let computerScore = 0;
+
+let message = '';
+
+
+function launchGame(one) {
+    message = playGame(one.classList[0], getComputerChoice());
+    display(message);
+}
+
+
+[rockBtn, paperBtn, scissorsBtn].forEach((one) => {one.addEventListener('click', () => launchGame(one))
+});
+
+
+
+function display(message) {
+    resultDiv.textContent = message;
+}
+
+
+
 function getComputerChoice () {
     return array[Math.floor(Math.random() * 3)];
 
 }
 
 
-function getPlayerChoice (addintionalMessage="") {
-    let input = parseInt(prompt(`${addintionalMessage}\n enter your choice:
-        1-Rock,
-        2-Paper,
-        3-Scissors`));
-    if(input<=3 && input>=1){
-        return array[input - 1];
-    }
-    else {
-        return getPlayerChoice("invalide input!");
-    }
 
+function endGame() {
+
+    playerScoreDisplay.textContent = 0;
+    playerScore = 0;
+    computerScoreDisplay.textContent = 0;
+    computerScore = 0;
+    
 }
 
 
 function playGame(playerChoice, computerChoice) {
     if(playerChoice == computerChoice){
-        let message = `Tie Game! both chose ${playerChoice}`;
-        return message;
+        ;
     }
+    // if the player wins:
     else if((playerChoice == "rock" && computerChoice == "scissors") || (playerChoice == "paper" && computerChoice == "rock") || (playerChoice == "scissors" && computerChoice == "paper")){
-        let message = `You Won! ${playerChoice} beats ${computerChoice}`;
-        return message;
+
+        playerScore += 1;
+        playerScoreDisplay.textContent = playerScore;
+        if(playerScore == 5) {
+            endGame()
+            message = 'You Scored 5 Points! You won The game!';
+            return message;
+        }
+
+
     }
+    // if the computer wins:
     else {
-        let message = `You Lost! ${computerChoice} beats ${playerChoice}`;
-        return message;
+        computerScore += 1;
+        computerScoreDisplay.textContent = (computerScore);
+        if(computerScore == 5) {
+            endGame();
+            message = 'The Computer Scored 5 Points! You Lost!';
+            return message;
+        }
+
     }
-    
+    return '';
 }
 
-console.log(playGame(getPlayerChoice(), getComputerChoice()));
+
+
+
+
